@@ -1,10 +1,14 @@
 # Personal engineering portfolio
 
-A responsive single-page portfolio built with HTML, CSS, and JavaScript. No build step or runtime dependencies. Includes dark/light themes, keyboard focus styles, reduced-motion support, original CSS/SVG project illustrations, and mobile layouts.
+A responsive multi-page portfolio built with HTML, CSS, and JavaScript. No build step or runtime dependencies. Includes dark/light themes, keyboard focus styles, reduced-motion support, original CSS/SVG project illustrations, and mobile layouts.
 
 ## Files
 
-- `index.html`: full page and project copy
+- `index.html`: home page
+- `work.html`: selected projects
+- `about.html`: biography, education, and skills
+- `journey.html`: experience and learning goals
+- `contact.html`: contact and social links
 - `styles.css`: responsive design, both themes, animation, and print styles
 - `profile.js`: personal details, resume path, and project URLs
 - `script.js`: profile rendering, link validation, theme persistence, and scroll reveals

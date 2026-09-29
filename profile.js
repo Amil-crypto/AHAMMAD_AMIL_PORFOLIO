@@ -7,7 +7,7 @@ window.PORTFOLIO = {
   graduationYear: 2029,
   email: "ahammedamil007@gmail.com",
   github: "https://github.com/Amil-crypto",
-  linkedin: null,
+  linkedin: "https://www.linkedin.com/in/ahammadamil",
   resume: null,
   siteUrl: null,
   projects: {

@@ -16,9 +16,10 @@
   });
   document.querySelectorAll("[data-initials]").forEach(el => { el.textContent = profile.initials || "YN"; });
   document.getElementById("year").textContent = new Date().getFullYear();
-  document.title = `${name} — Software & Systems Portfolio`;
+  const page = document.body.dataset.page || "Home";
+  document.title = page === "Home" ? `${name} — Software & Systems Portfolio` : `${page} — ${name}`;
   document.querySelector('[property="og:title"]').content = document.title;
-  if (profile.college || profile.graduationYear) {
+  if (document.getElementById("education-detail") && (profile.college || profile.graduationYear)) {
     document.getElementById("education-detail").textContent = [profile.college, profile.graduationYear && `Class of ${profile.graduationYear}`, "India"].filter(Boolean).join(" · ");
   }
   const safeUrl = (value, local = false) => {
@@ -38,13 +39,13 @@
   };
   activateLink(document.getElementById("github-link"), safeUrl(profile.github));
   activateLink(document.getElementById("linkedin-link"), safeUrl(profile.linkedin));
-  if (safeUrl(profile.linkedin)) document.getElementById("linkedin-link").firstChild.textContent = "LinkedIn ";
+  if (document.getElementById("linkedin-link") && safeUrl(profile.linkedin)) document.getElementById("linkedin-link").firstChild.textContent = "LinkedIn ";
   const resume = safeUrl(profile.resume, true);
   if (resume) {
     document.querySelectorAll(".resume-link").forEach(el => activateLink(el, resume, true));
-    document.querySelector(".resume-note").textContent = "A closer look at my background and work";
+    if (document.querySelector(".resume-note")) document.querySelector(".resume-note").textContent = "A closer look at my background and work";
   }
-  if (typeof profile.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)) {
+  if (document.getElementById("email-button") && typeof profile.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)) {
     const email = document.getElementById("email-button");
     email.href = `mailto:${profile.email}`;
     email.removeAttribute("aria-disabled");
@@ -67,8 +68,11 @@
   });
   const siteUrl = safeUrl(profile.siteUrl);
   if (siteUrl) {
-    const canonical = document.createElement("link"); canonical.rel = "canonical"; canonical.href = siteUrl; document.head.append(canonical);
-    const ogUrl = document.createElement("meta"); ogUrl.setAttribute("property", "og:url"); ogUrl.content = siteUrl; document.head.append(ogUrl);
+    const baseUrl = new URL(siteUrl);
+    if (!baseUrl.pathname.endsWith("/")) baseUrl.pathname += "/";
+    const pageUrl = page === "Home" ? siteUrl : new URL(`${page.toLowerCase()}.html`, baseUrl).href;
+    const canonical = document.createElement("link"); canonical.rel = "canonical"; canonical.href = pageUrl; document.head.append(canonical);
+    const ogUrl = document.createElement("meta"); ogUrl.setAttribute("property", "og:url"); ogUrl.content = pageUrl; document.head.append(ogUrl);
     const schema = document.createElement("script"); schema.type = "application/ld+json";
     schema.textContent = JSON.stringify({ "@context": "https://schema.org", "@type": "Person", name, url: siteUrl, sameAs: [safeUrl(profile.github), safeUrl(profile.linkedin)].filter(Boolean), description: "Electronics and Communication Engineering student focused on Java, full-stack development, and machine learning." });
     document.head.append(schema);
@@ -77,7 +81,7 @@
   const updateThemeLabel = () => {
     const dark = document.documentElement.dataset.theme === "dark";
     toggle.setAttribute("aria-label", `Switch to ${dark ? "light" : "dark"} theme`);
-    document.querySelector('meta[name="theme-color"]').content = dark ? "#151715" : "#f6f7f1";
+    document.querySelector('meta[name="theme-color"]').content = dark ? "#191714" : "#f6f2ea";
   };
   updateThemeLabel();
   toggle.addEventListener("click", () => {
